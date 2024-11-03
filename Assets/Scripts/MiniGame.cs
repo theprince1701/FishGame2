@@ -62,6 +62,7 @@ public class MiniGame : MonoBehaviour
         else
         {
             _fish.OnMiniGameFailed();
+            _hook.GrappleCollision.fish = null;
             _hook.OnHooked();
             miniGameUI.SetActive(false);
             isInMiniGame = false;

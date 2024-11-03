@@ -19,7 +19,7 @@ public class GrappleCollision : MonoBehaviour
     }
 
     public GrapplingHook grapple { get; private set; }
-    public Fish fish { get; private set; }
+    public Fish fish { get; set; }
 
 
     public void Initialize(GrapplingHook grapple)

@@ -35,7 +35,8 @@ public class GrapplingHook : MonoBehaviour
     private AudioSource audioSource;
 
     private IEnumerator _resetGrappleCoroutine;
-    
+
+    public GrappleCollision GrappleCollision => grappleCollision;
     private void Awake()
     {
         grappleCollision = new GameObject("GrappleCollision").AddComponent<GrappleCollision>();
