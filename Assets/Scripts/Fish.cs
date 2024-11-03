@@ -58,6 +58,7 @@ public class Fish : MonoBehaviour
 
     public void DestroyFish()
     {
+        FindObjectOfType<ScoreUI>().OnFishCaught();
         Destroy(gameObject);
     }
 
