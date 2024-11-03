@@ -19,6 +19,7 @@ public class WaterTriggerHandler : MonoBehaviour
     {
         if ((waterMask.value & (1 << other.gameObject.layer)) > 0)
         {
+
             Rigidbody2D rb = other.GetComponent<Rigidbody2D>();
 
             if (rb)
@@ -34,10 +35,9 @@ public class WaterTriggerHandler : MonoBehaviour
                     multiplier = 1;
                 }
 
-                float vel = rb.linearVelocity.y * _water.forceMultiplier;
+                float vel = 20 * _water.forceMultiplier;
                 vel = Mathf.Clamp(Mathf.Abs(vel), 0f, _water.maxForce);
                 vel *= multiplier;
-                
                 _water.Splash(other, vel);
             }
         }

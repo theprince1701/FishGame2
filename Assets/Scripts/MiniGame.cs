@@ -1,4 +1,6 @@
 using System;
+using TMPro;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,7 +12,7 @@ public class MiniGame : MonoBehaviour
     public GameObject[] liveImages;
     public Image fishIcon;
     public Image boxIcon;
-
+    public TextMeshProUGUI caughtFishText;
     public float scrollSpeed = 1f;
     private float speedIncrease = 1.5f;
     public float maxY = 130.5f;
@@ -24,14 +26,16 @@ public class MiniGame : MonoBehaviour
 
     private float _currentScore;
     private int _currentLife;
-    
-    private void Start()
-    {
-        StartMiniGame();
-    }
+    private GrapplingHook _hook;
+    private Fish _fish;
 
-    public void StartMiniGame()
+    [HideInInspector]
+    public bool isInMiniGame;
+    public void StartMiniGame(GrapplingHook hook, Fish fish)
     {
+        _hook = hook;
+        _fish = fish;
+        isInMiniGame = true;
         miniGameUI.SetActive(true);
         gameOverUI.SetActive(false);
         _currentLife = 5;
@@ -47,16 +51,35 @@ public class MiniGame : MonoBehaviour
         }
     }
 
-    public void StopMiniGame()
+    public void StopMiniGame(bool success)
     {
+        if (success)
+        {
+            _hook.OnHooked();
+            caughtFishText.text = "YOU CAUGHT: " + _fish.fishName;
+            gameOverUI.SetActive(true);
+        }
+        else
+        {
+            _fish.OnMiniGameFailed();
+            _hook.OnHooked();
+            miniGameUI.SetActive(false);
+            isInMiniGame = false;
+        }
         _isPlaying = false;
+        _currentScore = 0;
+        _currentLife = 5;
         boxIcon.transform.localPosition = new Vector3(0, minY + 10f, 0);
-        gameOverUI.SetActive(true);
         
         foreach (GameObject img in liveImages)
         {
             img.SetActive(false);
         }
+    }
+
+    public void CloseMiniGame()
+    {
+        isInMiniGame = false;
     }
     
     private void Update()
@@ -91,13 +114,18 @@ public class MiniGame : MonoBehaviour
 
                     if (_currentScore >= 1f)
                     {
-                        StopMiniGame();
+                        StopMiniGame(true);
                     }
                 }
                 else
                 {
                     _currentLife--;
                     liveImages[_currentLife].SetActive(false);
+
+                    if (_currentLife <= 0)
+                    {
+                        StopMiniGame(false);
+                    }
                 }
             }
         }

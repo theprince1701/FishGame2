@@ -58,7 +58,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BodyTransparency: 0.05
+    - _BodyTransparency: 0.5
     - _CausticOffsetSpeed: 1
     - _CausticPower: 9.5
     - _CausticScale: 10
